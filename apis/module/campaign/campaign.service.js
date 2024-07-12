@@ -21,17 +21,23 @@ const createCampaignToDB = (payload) => __awaiter(void 0, void 0, void 0, functi
     return result;
 });
 exports.createCampaignToDB = createCampaignToDB;
-const getCampaignFromDB = (nameQuery, sortQuery, idQuery, user, status, category) => __awaiter(void 0, void 0, void 0, function* () {
+const getCampaignFromDB = (nameQuery, sortQuery, idQuery, user, status, category, category_Id) => __awaiter(void 0, void 0, void 0, function* () {
     let query = {};
     // If name is provided, filter by name
     if (nameQuery) {
         query.campaign_name = { $regex: nameQuery, $options: "i" };
     }
     if (category) {
+        if (category === null || category === void 0 ? void 0 : category.includes("%20")) {
+            console.log(category === null || category === void 0 ? void 0 : category.replace("%20", " "));
+            query.category_name = category === null || category === void 0 ? void 0 : category.replace("%20", " ");
+        }
         query.category_name = category;
     }
+    if (category_Id) {
+        query.category_Id = category_Id;
+    }
     if (status) {
-        console.log(status);
         query.status = status;
     }
     if (user) {

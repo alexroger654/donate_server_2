@@ -46,9 +46,8 @@ exports.createCampaign = createCampaign;
 // ==================== get users ======================
 const getCampaign = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // query parameters ============
-    const { name, sort, id, user, category, status } = req.query;
-    console.log(status, "pppp");
-    const result = yield (0, campaign_service_1.getCampaignFromDB)(name, sort, id, user, status, category);
+    const { name, sort, id, user, category, status, category_Id } = req.query;
+    const result = yield (0, campaign_service_1.getCampaignFromDB)(name, sort, id, user, status, category, category_Id);
     res.status(200).json({
         status: "success",
         data: result,
