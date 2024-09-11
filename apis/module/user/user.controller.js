@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleUserLogin = exports.getAllEmployeeByCompanyEmail = exports.getUserByEmail = exports.getUserById = exports.getUsers = exports.createUser = void 0;
+exports.updateUser = exports.handleUserLogin = exports.getAllEmployeeByCompanyEmail = exports.getUserByEmail = exports.getUserById = exports.getUsers = exports.createUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_service_1 = require("./user.service");
 // ==================== create user ======================
@@ -57,10 +57,11 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 exports.createUser = createUser;
 // ==================== get users ======================
 const getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield (0, user_service_1.getUsersFromDB)();
+    const { name, email, phone } = req.query;
+    const result = yield (0, user_service_1.getUsersFromDB)(name, email, phone);
     res.status(200).json({
         status: "success",
-        data: user,
+        data: result,
     });
 });
 exports.getUsers = getUsers;
@@ -131,6 +132,29 @@ const handleUserLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.handleUserLogin = handleUserLogin;
+const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const data = req.body;
+        let hashedPassword;
+        if (data === null || data === void 0 ? void 0 : data.password) {
+            hashedPassword = yield bcrypt_1.default.hash(data === null || data === void 0 ? void 0 : data.password, 15);
+        }
+        const updatedUser = yield (0, user_service_1.updateUserInDB)(id, Object.assign(Object.assign({}, data), { password: hashedPassword }));
+        res.status(200).json({
+            status: "success",
+            data: updatedUser,
+        });
+    }
+    catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({
+            status: "error",
+            message: "Failed to update user",
+        });
+    }
+});
+exports.updateUser = updateUser;
 // export const getAdminUsers = async (
 //   req: Request,
 //   res: Response,

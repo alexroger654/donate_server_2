@@ -32,8 +32,12 @@ const createTransaction = (req, res, next) => __awaiter(void 0, void 0, void 0, 
 exports.createTransaction = createTransaction;
 // ==================== get users ======================
 const getTransaction = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, product_id, user_id } = req.query;
-    const result = yield (0, transaction_service_1.getTransactionFromDB)(name, product_id, user_id);
+    const { name, product_id, user_id, limit, page, date } = req.query;
+    const pageNumber = parseInt(page, 10) || 1;
+    const pageSize = parseInt(limit, 10) || 10;
+    // Calculate skip value for pagination
+    const skip = (pageNumber - 1) * pageSize;
+    const result = yield (0, transaction_service_1.getTransactionFromDB)(name, product_id, user_id, limit, skip, date);
     res.status(200).json({
         status: "success",
         data: result,

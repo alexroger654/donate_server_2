@@ -21,8 +21,9 @@ const createTransactionToDB = (payload) => __awaiter(void 0, void 0, void 0, fun
     return result;
 });
 exports.createTransactionToDB = createTransactionToDB;
-const getTransactionFromDB = (name, product_id, user_id) => __awaiter(void 0, void 0, void 0, function* () {
+const getTransactionFromDB = (name, product_id, user_id, limit, skip, date) => __awaiter(void 0, void 0, void 0, function* () {
     let query = {};
+    console.log("here ====================>");
     if (name) {
         query.user_name = name;
     }
@@ -32,9 +33,21 @@ const getTransactionFromDB = (name, product_id, user_id) => __awaiter(void 0, vo
     if (user_id) {
         query.user_id = user_id;
     }
+    if (date) {
+        console.log("here ====================>", date);
+        const queryDate = new Date(date);
+        if (isNaN(queryDate.getTime())) {
+            throw new Error("Invalid date format");
+        }
+        const startOfDay = new Date(queryDate.setHours(0, 0, 0, 0));
+        const endOfDay = new Date(queryDate.setHours(23, 59, 59, 999));
+        query.createdAt = { $gte: startOfDay, $lte: endOfDay };
+    }
     let sort = { created_at: 1 };
-    console.log(query, "-----------------------");
-    const result = yield transaction_model_1.default.find(query).sort(sort);
+    const result = yield transaction_model_1.default.find(query)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit);
     // const result = await Transaction.find();
     return result;
 });

@@ -29,7 +29,6 @@ const getCampaignFromDB = (nameQuery, sortQuery, idQuery, user, status, category
     }
     if (category) {
         if (category === null || category === void 0 ? void 0 : category.includes("%20")) {
-            console.log(category === null || category === void 0 ? void 0 : category.replace("%20", " "));
             query.category_name = category === null || category === void 0 ? void 0 : category.replace("%20", " ");
         }
         query.category_name = category;
@@ -46,7 +45,6 @@ const getCampaignFromDB = (nameQuery, sortQuery, idQuery, user, status, category
     if (idQuery) {
         query._id = idQuery;
     }
-    console.log(query, "pppppppppp");
     // // Sorting based on sortQuery
     let sort = { created_at: 1 }; // Default
     if (sortQuery && sortQuery.toLowerCase() === "desc") {

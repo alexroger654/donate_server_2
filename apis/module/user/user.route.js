@@ -17,4 +17,5 @@ router.get("/email/:email", user_controller_1.getUserByEmail);
 router.get("/id/:id", user_controller_1.getUserById);
 router.post("/create", user_controller_1.createUser);
 router.post("/login", user_controller_1.handleUserLogin);
+router.patch("/update/:id", user_controller_1.updateUser);
 exports.default = router;

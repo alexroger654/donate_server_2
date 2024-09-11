@@ -35,6 +35,7 @@ const CampaignSchema = new mongoose_1.Schema({
     beneficiary_party_name: String,
     image_url: String,
     category_name: String,
+    category_Id: String,
     targeted_amount: Number,
     raised_amount: { type: Number, default: 0 },
     location: String,
