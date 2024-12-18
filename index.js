@@ -49,7 +49,7 @@ function connectToDB() {
     try {
       // ============== connnecting to db ==============
       yield mongoose_1.default.connect(
-        "mongodb+srv://tausif:129400@cluster0.tzceu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+        "mongodb+srv://foundation:2l4xwQlg5MSe58kP@cluster0.etgpuim.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
       );
       console.log("connected to db");
       // ============== starting the server ==============
