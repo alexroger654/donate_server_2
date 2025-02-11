@@ -31,11 +31,6 @@ const userBaseSchema = new mongoose_1.Schema({
         enum: ["consumer", "admin", "employee"],
         default: "consumer",
     },
-    status: {
-        type: String,
-        enum: ["active", "disabled", "pending"],
-        default: "active",
-    },
     name: {
         type: String,
         required: true,
@@ -44,21 +39,6 @@ const userBaseSchema = new mongoose_1.Schema({
         type: String,
         required: true,
         unique: true,
-    },
-    state: {
-        type: String,
-    },
-    city: {
-        type: String,
-    },
-    address: {
-        type: String,
-    },
-    age: {
-        type: Number,
-    },
-    phone: {
-        type: Number,
     },
     password: {
         type: String,

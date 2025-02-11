@@ -1,63 +1,49 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserInDB = exports.getAllUsersFromDBByCompanyEmail = exports.getUserByEmailFromDB = exports.getUserByIdFromDB = exports.getUsersFromDB = exports.createUserToDB = void 0;
+exports.updateUserPasswordInDB = exports.getAllUsersFromDBByCompanyEmail = exports.getUserByEmailFromDB = exports.getUserByIdFromDB = exports.getUsersFromDB = exports.createUserToDB = void 0;
 const user_model_1 = __importDefault(require("./user.model"));
-const createUserToDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+const createUserToDB = async (payload) => {
     // creating a new user
     const user = new user_model_1.default(payload);
-    yield user.save();
+    await user.save();
     return user;
-});
+};
 exports.createUserToDB = createUserToDB;
-const getUsersFromDB = (nameQuery, email, phone) => __awaiter(void 0, void 0, void 0, function* () {
-    let query = {};
-    if (nameQuery && isNaN(phone)) {
-        query.name = { $regex: nameQuery, $options: "i" };
-    }
-    if (email && isNaN(phone)) {
-        query.email = { $regex: email, $options: "i" };
-    }
-    if (phone && !isNaN(phone)) {
-        query.phone = phone;
-    }
-    const users = yield user_model_1.default.find(query);
+const getUsersFromDB = async () => {
+    const users = await user_model_1.default.find();
     return users;
-});
+};
 exports.getUsersFromDB = getUsersFromDB;
-const getUserByIdFromDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserByIdFromDB = async (payload) => {
     try {
-        const user = yield user_model_1.default.findById(payload);
+        const user = await user_model_1.default.findById(payload);
         return user;
     }
     catch (error) {
         console.error("Error finding user by ID:", error);
         return null;
     }
-});
+};
 exports.getUserByIdFromDB = getUserByIdFromDB;
-const getUserByEmailFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.default.findOne({ email: email });
+const getUserByEmailFromDB = async (email) => {
+    const user = await user_model_1.default.findOne({ email: email });
     return user;
-});
+};
 exports.getUserByEmailFromDB = getUserByEmailFromDB;
-const getAllUsersFromDBByCompanyEmail = (companyEmail) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllUsersFromDBByCompanyEmail = async (companyEmail) => {
     console.log("companyEmail", companyEmail);
-    const users = yield user_model_1.default.find({ companyEmail: companyEmail });
+    const users = await user_model_1.default.find({ companyEmail: companyEmail });
     return users;
-});
+};
 exports.getAllUsersFromDBByCompanyEmail = getAllUsersFromDBByCompanyEmail;
+const updateUserPasswordInDB = async (email, payload) => {
+    const updatedUser = await user_model_1.default.findOneAndUpdate({ email }, payload, { new: true });
+    return updatedUser;
+};
+exports.updateUserPasswordInDB = updateUserPasswordInDB;
 // export const getAdminUsersFromDB = async () => {
 //   const admins = await User.getAdminUsers();
 //   console.log(admins);
@@ -67,17 +53,3 @@ exports.getAllUsersFromDBByCompanyEmail = getAllUsersFromDBByCompanyEmail;
 // user = new User
 // user.   instance methods
 // User.getAdminUsers()
-const updateUserInDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        // console.log(id, payload);
-        const updatedUser = yield user_model_1.default.findByIdAndUpdate(id, payload, {
-            new: true,
-        });
-        return updatedUser;
-    }
-    catch (error) {
-        console.error("Error updating user:", error);
-        return null;
-    }
-});
-exports.updateUserInDB = updateUserInDB;
