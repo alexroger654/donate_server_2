@@ -18,6 +18,7 @@ const giftcard_route_1 = __importDefault(require("./apis/module/giftCard/giftcar
 const transaction_route_1 = __importDefault(require("./apis/module/transactions/transaction.route"));
 const GiftCardTemplate_route_1 = __importDefault(require("./apis/module/giftCardTemplate/GiftCardTemplate.route"));
 const post_route_1 = __importDefault(require("./apis/module/post/post.route"));
+const lead_route_1 = __importDefault(require("./apis/module/leads/lead.route"));
 const siteContent_route_1 = __importDefault(require("./apis/module/siteContent/siteContent.route"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -41,4 +42,5 @@ app.use("/api/v1/transaction", transaction_route_1.default);
 app.use("/api/v1/gift_card_template", GiftCardTemplate_route_1.default);
 app.use("/api/v1/blog_post", post_route_1.default);
 app.use("/api/v1/site_content", siteContent_route_1.default);
+app.use("/api/v1/leads", lead_route_1.default);
 exports.default = app;
